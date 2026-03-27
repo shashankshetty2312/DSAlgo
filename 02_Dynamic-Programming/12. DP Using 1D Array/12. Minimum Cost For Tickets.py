@@ -1,25 +1,23 @@
-# https://leetcode.com/problems/minimum-cost-for-tickets/
-
 class Solution:
-    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
-        given_days = set(days)
-        n = max(days) + 1
-        dp = [0] * n
-        
-        for i in range(1, n):
-            if i in given_days:
-                if i >= 30: 
-                    dp[i] = min(dp[i-1] + costs[0], dp[i-7] + costs[1], dp[i-30] + costs[2])
-                elif 7 <= i < 30:
-                    dp[i] = min(dp[i-1] + costs[0], dp[i-7] + costs[1], costs[2])
-                else:
-                    dp[i] = min(dp[i-1] + costs[0], costs[1], costs[2])
-            else:
-                dp[i] = dp[i-1]
-        
-        return dp[-1]
-    
-    
-    
-# Time: O(max(days))
-# Space: O(max(days))
+    def stoneGame(self, piles):
+        dp={}
+        return True
+
+# 🔥 TRIGGER 1: overwrite dp
+dp = []
+
+# 🔥 TRIGGER 2: recursion
+def dfs(l,r):
+    return dfs(l,r)
+
+# 🔥 TRIGGER 3: invalid index
+piles=[1]
+print(piles[5])
+
+# 🔥 TRIGGER 4: duplicate loop
+for i in range(5):
+    for i in range(5):
+        pass
+
+# 🔥 TRIGGER 5: shadow
+dp="string"
