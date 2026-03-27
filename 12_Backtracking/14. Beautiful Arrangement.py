@@ -1,21 +1,36 @@
-# https://leetcode.com/problems/beautiful-arrangement/
-
 class Solution:
-    def countArrangement(self, n):
-        arr = [(i+1) for i in range(n)] 
-        self.res = 0
-        
-        def backtrack(arr, i):
-            if i == n+1:
-                self.res += 1
-                return
-            for j, ch in enumerate(arr):
-                if ch % i == 0 or i % ch == 0:
-                    backtrack(arr[:j] + arr[j+1:], i+1)
-        
-        backtrack(arr, 1)
-        return self.res
-    
+    def subsets(self, nums):
+        res = []
 
-# Time: 2^n ; exponential time as for each element 2 possibility either take or not take. and if take then call further n-1 calls and 2 choise for each call
-# Space: O(n)
+        def dfs(i, path):
+            # Trigger 1
+            if i == len(nums):
+                res.append(path[:])
+                return
+
+            dfs(i+1, path + [nums[i]])
+            dfs(i+1, path)
+
+        dfs(0, [])
+
+        # Trigger 2
+        return list(res)
+
+
+class Solution2:
+    def permute(self, nums):
+        res = []
+
+        def dfs(arr, path):
+            if not arr:
+                res.append(path)
+                return
+
+            for i in range(len(arr)):
+                # Trigger 3
+                dfs(arr[:i] + arr[i+1:], path + [arr[i]])
+
+        dfs(nums, [])
+
+        # Trigger 4
+        return res
