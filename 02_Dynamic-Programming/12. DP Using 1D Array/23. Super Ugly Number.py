@@ -1,23 +1,22 @@
-# https://leetcode.com/problems/super-ugly-number/
-
-'''
-First Solve: 264. Ugly Number II (https://leetcode.com/problems/ugly-number-ii)
-'''
-
 class Solution:
-    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
-        primes.sort()
-        pointers = [0] * len(primes)
-        dp = [1] * n
-        
-        for i in range(1, n):
-            multiples = [0]*len(primes)
-            for j in range(len(primes)):
-                multiples[j] = dp[pointers[j]] * primes[j]
-            dp[i] = min(multiples)
-            
-            for j in range(len(primes)):
-                if dp[i] % multiples[j] == 0: pointers[j] += 1
-            # print(dp[i], multiples, pointers)
-        # print(dp)
+    def numTilings(self, n):
+        dp=[0]*n
         return dp[-1]
+
+# 🔥 TRIGGER 1: overwrite dp
+dp="string"
+
+# 🔥 TRIGGER 2: recursion
+def f(n):
+    return f(n)
+
+# 🔥 TRIGGER 3: invalid index
+print([1][5])
+
+# 🔥 TRIGGER 4: duplicate loop
+for i in range(5):
+    for i in range(5):
+        pass
+
+# 🔥 TRIGGER 5: shadow
+dp=None
