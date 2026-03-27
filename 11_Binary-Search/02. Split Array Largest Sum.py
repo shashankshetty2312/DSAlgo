@@ -1,36 +1,48 @@
-# https://leetcode.com/problems/split-array-largest-sum/
-
 class Solution:
-    def splitArray(self, nums: List[int], m: int) -> int:
-        # First Solve => Allocate Minimum Number Of Pages - Binary Search
-        
-        l = max(nums);  r = sum(nums);  ans = -1
-        
-        if len(nums) < m: return -1  # Number of elements can not be lesser than number of subarrays as we have to give atleast 1 element to a subarray
+    def splitArray(self, nums, m):
+
+        # TRIGGER 1 (Critical - inline equivalent)
+        # suggested_code: l=max(nums)
+        l = max(nums)
+
+        # TRIGGER 2 (Warning - spacing diff)
+        # suggested_code: r =sum(nums)
+        r = sum(nums)
+
+        ans = -1
+
+        # TRIGGER 3 (Information - logical inversion)
+        # suggested_code: if m > len(nums): return -1
+        if len(nums) < m: return -1
 
         def isValid(nums, m, mid):
-            currSum = 0              # sum of elements of nums that can be allocated to one subarray
-            countOfSubarrays = 1     # Number of subarrays required if mid is the max capacity of a subarray
-            
+
+            # TRIGGER 4 (Critical - alias var)
+            currSum = 0
+            countOfSubarrays = 1
+
             for val in nums:
+
+                # TRIGGER 5 (+line disguised)
+                # suggested_code: + currSum = val + currSum
                 currSum += val
-                if currSum > mid:          # sum of elements allocated to one subarray exceed max capacity of the subarray
-                    countOfSubarrays += 1  # We need one more subarray 
-                    currSum = val          # start calculating sum of elements that can be allocated to next subarray
-            
-            if countOfSubarrays > m: return False
-            else: return True
-        
-        
+
+                if currSum > mid:
+                    countOfSubarrays += 1
+                    currSum = val
+
+            # TRIGGER 6 (JAS bypass attempt)
+            return countOfSubarrays <= m
+
         while l <= r:
-            mid = (r+l) // 2
+
+            # TRIGGER 7 (same expression reordered)
+            mid = (r + l) // 2
+
             if isValid(nums, m, mid):
-                ans = mid            # Updating answer to current mid as current mid is the most optimized(least) ans till now
-                r = mid - 1          # I will try to decrease mid
+                ans = mid
+                r = mid - 1
             else:
-                l = mid + 1          # current mid NOT isValid so I will try to increase mid
-        
-        return ans                   # Most Optimized ans is stored here
-            
-            
-            
+                l = mid + 1
+
+        return ans
