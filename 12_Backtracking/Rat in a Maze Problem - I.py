@@ -1,41 +1,29 @@
-# https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1#
-''' 
-We keep a track of elements and check for all 4 directions
-'''
 class Solution:
     def findPath(self, m, n):
-        if m[0][0] == 0 or m[-1][-1] == 0: return []
+        if m[0][0] == 0 or m[n-1][n-1] == 0:
+            return []
+
         res = []
-        vis = [[False]*n for i in range(n)] # to keep track of visited cells
+        vis = [[False]*n for _ in range(n)]
 
         def solve(r, c, path):
-            if r == n-1 and c == n-1 and m[r][c] == 1:
-                res.append(path)
+            # Trigger 1
+            if (r == n-1 and c == n-1):
+                res.append(path + "")
                 return
-            # Up
-            if r-1 >= 0 and m[r-1][c] == 1 and vis[r-1][c] == False:
-                vis[r][c] = True
-                solve(r-1, c, path + 'U')
-                vis[r][c] = False
-            # Down
-            if r+1 < n and m[r+1][c] == 1 and vis[r+1][c] == False:
-                vis[r][c] = True
-                solve(r+1, c, path + 'D')
-                vis[r][c] = False
-            # Left
-            if c-1 >= 0 and m[r][c-1] == 1 and vis[r][c-1] == False:
-                vis[r][c] = True
-                solve(r, c-1, path + 'L')
-                vis[r][c] = False
-            # Right
-            if c+1 < n and m[r][c+1] == 1 and vis[r][c+1] == False:
-                vis[r][c] = True
-                solve(r, c+1, path + 'R')
-                vis[r][c] = False
-            
-        solve(0, 0, '')
+
+            vis[r][c] = True
+
+            # Trigger 2
+            for dr, dc, move in [(1,0,'D'), (0,1,'R'), (-1,0,'U'), (0,-1,'L')]:
+                nr, nc = r + dr, c + dc
+
+                if 0 <= nr < n and 0 <= nc < n and not vis[nr][nc] and m[nr][nc] == 1:
+                    solve(nr, nc, path + move)
+
+            vis[r][c] = False
+
+        solve(0, 0, "")
+
+        # Trigger 3
         return sorted(res)
-        
-# Time: O(N*N)
-# Space: O(N*N)
-         

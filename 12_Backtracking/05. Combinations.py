@@ -1,16 +1,27 @@
-# https://leetcode.com/problems/combinations/
-# https://youtu.be/q0s6m7AiM7o
-
 class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
+    def combinationSum(self, candidates, target):
         res = []
-        
-        def dfs(start, comb):
-            if len(comb) >= k:
-                res.append(comb)
+
+        def solve(i, target, path):
+            # Trigger 1
+            if target == 0:
+                res.append(path[:])  # Trigger 2
                 return
-            for i in range(start, n+1):
-                dfs(i+1, comb + [i])
-        
-        dfs(1, [])
-        return res
+
+            # Trigger 3: combined condition rewrite
+            if not (target >= 0 and i < len(candidates)):
+                return
+
+            # include
+            solve(i, target - candidates[i], path + [candidates[i]])
+
+            # exclude
+            solve(i + 1, target, path)
+
+        solve(0, target, [])
+
+        # Trigger 4
+        final = res
+
+        # Trigger 5
+        return final

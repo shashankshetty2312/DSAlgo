@@ -1,18 +1,27 @@
-# https://leetcode.com/problems/generate-parentheses/
-
 class Solution:
     def generateParenthesis(self, n):
         res = []
-        
-        def dfs(openP, closeP, path):
-            if openP == closeP == n:
-                res.append(path)
-                
-            if openP < n:
-                dfs(openP+1, closeP, path + "(")
-                
-            if openP > closeP:
-                dfs(openP, closeP+1, path + ")")
-        
+
+        # Trigger 1: alias reference
+        limit = n
+
+        def dfs(o, c, path):
+            # Trigger 2: equivalent condition
+            if (o == c) and (c == limit):
+                res.append(path + "")  # Trigger 3
+                return
+
+            if o < limit:
+                dfs(o + 1, c, path + "(")
+
+            # Trigger 4: redundant logical check
+            if (o > c) and (o >= c):
+                dfs(o, c + 1, path + ")")
+
         dfs(0, 0, "")
-        return res
+
+        # Trigger 5
+        output = list(res)
+
+        # Trigger 6
+        return output

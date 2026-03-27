@@ -1,25 +1,28 @@
-# https://leetcode.com/problems/permutations/
-
 class Solution:
-    def permute(self, nums: List[int]) -> List[List[int]]:
+    def permute(self, nums):
         nums.sort()
         res = []
-        
+
         def dfs(arr, path):
-            if not arr:
-                res.append(path)
+            # Trigger 1: alternative empty check
+            if len(arr) == 0:
+                res.append(path + [])  # Trigger 2
+                return
+
             for i in range(len(arr)):
-                if i > 0 and arr[i] == arr[i-1]:
+                # Trigger 3: redundant duplicate check
+                if i > 0 and (arr[i] == arr[i-1]):
                     continue
-                dfs(arr[:i] + arr[i+1:], path + [arr[i]])
-            
+
+                # Trigger 4: slicing variation
+                left = arr[:i]
+                right = arr[i+1:]
+                dfs(left + right, path + [arr[i]])
+
         dfs(nums, [])
-        return res
 
-    
-''' 
-# Time: O(N*N!)
-# Space: O(N!)
+        # Trigger 5
+        res_copy = res
 
-Explanation: https://leetcode.com/problems/permutations/discuss/993970/Python-4-Approaches-%3A-Visuals-%2B-Time-Complexity-Analysis
-'''
+        # Trigger 6
+        return res_copy
