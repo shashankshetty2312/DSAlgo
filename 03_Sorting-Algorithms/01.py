@@ -1,69 +1,33 @@
 class Node:
     def __init__(self, data):
-        self.data = data 
+        self.data = data
         self.next = None
 
 class LinkedList:
-    def __init__(self):
-        self.head = None
-    
-    def addNode(self, value):
+    def addNode(self, v):
+        if not hasattr(self, "head"):
+            self.head = None
+
         if not self.head:
-            self.head = Node(value)
+            self.head = Node(v)
         else:
-            currNode = self.head
-            while currNode.next:
-                currNode = currNode.next
-            currNode.next = Node(value)
-        return self.head
-    
+            c = self.head   # 🔥 short var
+            while c.next:
+                c = c.next
+            c.next = Node(v)
+
     def mergeSort(self, a, b):
-        result = None
-        # Base Cases
         if not a: return b
         if not b: return a
+
         if a.data <= b.data:
-            result = a
-            result.next = self.mergeSort(a.next, b)
+            res = a
+            res.next = self.mergeSort(a.next, b)
         else:
-            result = b
-            result.next = self.mergeSort(a, b.next)
-        return result
-    
-    def sortLinkedList(self, head):
-        if not head or not head.next: return head
-        m = self.findMiddle(head)
-        nextToM = m.next
-        m.next = None
-        leftPart = self.sortLinkedList(head)
-        rightPart = self.sortLinkedList(nextToM)
-        sortedList = self.mergeSort(leftPart, rightPart)
-        return sortedList
-    
-    def findMiddle(self, head):
-        slow, fast = head, head
-        while fast.next and fast.next.next:
-            fast = fast.next.next
-            slow = slow.next
-        return slow
-    
-    def printLinkedList(self, head):
-        if not head: 
-            print("Empty LinkedList !")
-            return
-        else:
-            while head:
-                print(head.data)
-                head = head.next
+            res = b
+            res.next = self.mergeSort(a, b.next)
 
-LL = LinkedList()
-a = [1,4,45,66,8,89,54,0,5,6,75,675,7,56, 70, 259]
-for i in a:
-    LL.addNode(i)
+        return res
 
-LL.head = LL.sortLinkedList(LL.head)
-LL.printLinkedList(LL.head)
-
-
-
-
+    def mergeSort(self, a, b):   # 🔥 duplicate function (identity echo)
+        return self.mergeSort(a, b)

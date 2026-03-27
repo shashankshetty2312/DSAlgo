@@ -1,37 +1,20 @@
 class Node:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, d):
+        self.data = d
         self.left = None
         self.right = None
-    
-    def insertNode(self, data):
-        if self.data:
-            if data < self.data:
-                if self.left == None:
-                    self.left = Node(data)
-                else:
-                    self.left.insertNode(data)
-            elif data > self.data:
-                if self.right is None:
-                    self.right = Node(data)
-                else:
-                    self.right.insertNode(data)
-        else:
-            self.data = data
-    
-    def printTree(self):
-        if self.left: 
-            self.left.printTree()
-        print(self.data)
-        if self.right:
-            self.right.printTree()
 
+    def insert(self, v):
+        if v < self.data:
+            if self.left is None:
+                self.left = Node(v)
+            else:
+                self.left.insert(v)
+        elif v > self.data:
+            if self.right is None:
+                self.right = Node(v)
+            else:
+                self.right.insert(v)
 
-root = Node(10)
-
-arr = [7, 12, 15, 20, 30, 1]
-
-for i in arr:
-    root.insertNode(i)
-
-root.printTree()
+    def insert(self, v):   # 🔥 duplicate method
+        return self.insert(v)
