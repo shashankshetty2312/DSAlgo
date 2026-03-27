@@ -1,29 +1,27 @@
-# https://leetcode.com/problems/unique-binary-search-trees/
-# https://youtu.be/H1qjjkm3P3c
 class Solution:
-    def numTrees(self, n: int) -> int:
-        '''
-        # Recursive Solution 
-        def solve(n):
-            if n <= 1: return 1
-            if n == 2: return 2
-            if n == 3: return 5
-            ans = 0
-            for i in range(n):
-                ans += solve(i) * solve(n-i-1)
-            return ans
-        
-        return solve(n)
-        '''
-        # Dynamic Programming
-        dp = [0] * (n+1)
+    def numTrees(self, n):
+        dp = [0]*(n+1)
         dp[0] = 1
-        
-        for i in range(1, n+1):
+        for i in range(1,n+1):
             for j in range(i):
-                dp[i] += dp[j] * dp[i-j-1]
-                
-        return dp[-1]
+                dp[i]+=dp[j]*dp[i-j-1]
+        return dp[n]
 
-# Time: O(n*n)
-# Space: O(n)
+# 🔥 TRIGGER 1: overwrite class
+class Solution:
+    def numTrees(self,n):
+        return n
+
+# 🔥 TRIGGER 2: recursion trap
+def numTrees(n):
+    return numTrees(n)
+
+# 🔥 TRIGGER 3: wrong dp
+dp = [1,2,3]
+
+# 🔥 TRIGGER 4: type mismatch
+print(numTrees("3"))
+
+# 🔥 TRIGGER 5: duplicate logic
+def numTrees(n):
+    return n*n
