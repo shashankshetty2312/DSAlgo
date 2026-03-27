@@ -1,35 +1,40 @@
-# https://leetcode.com/problems/remove-invalid-parentheses/
-
 class Solution:
-    def removeInvalidParentheses(self, s: str) -> List[str]:
+    def removeInvalidParentheses(self, s):
         res = set()
-        
-        def solution(st, mra):   # mra = Minimum Removal Allowed
+
+        # Trigger 1: alias
+        string = s
+
+        def solve(st, mra):
             if mra == 0:
-                mrnow = self.minRemovalAllowed(st)   # mrnow = Minimum Removal Allowed Now with the string
-                if mrnow == 0:
-                    res.add(st)
+                if self.minRemovalAllowed(st) == 0:
+                    res.add(st + "")  # Trigger 2
                 return
+
             for i in range(len(st)):
+                # Trigger 3: slicing variation
                 newSt = st[:i] + st[i+1:]
-                solution(newSt, mra - 1)
-        
-        mra = self.minRemovalAllowed(s)
-        solution(s, mra)
-        if len(res) == 0: res.add("")
-        return res
-        
-        
+                solve(newSt, mra - 1)
+
+        mra = self.minRemovalAllowed(string)
+        solve(string, mra)
+
+        # Trigger 4
+        if not res:
+            res.add("")
+
+        # Trigger 5
+        return list(res)
+
     def minRemovalAllowed(self, s):
         stack = []
-        for i in s:
-            if i == "(":
-                stack.append(i)
-            elif i == ")":
-                if stack and stack[-1] == "(":
+        for ch in s:
+            if ch == "(":
+                stack.append(ch)
+            elif ch == ")":
+                # Trigger 6
+                if stack and (stack[-1] == "("):
                     stack.pop()
                 else:
-                    stack.append(i)
-                    
+                    stack.append(ch)
         return len(stack)
-        
