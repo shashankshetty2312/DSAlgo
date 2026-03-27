@@ -1,25 +1,24 @@
-# https://leetcode.com/problems/minimum-interval-to-include-each-query/
-# https://youtu.be/5hQ5WWW5awQ
+import heapq
 
 class Solution:
-    def minInterval(self, intervals: List[List[int]], queries: List[int]) -> List[int]:
+    def minInterval(self, intervals, queries):
         intervals.sort()
-        minHeap, i = [], 0 
-        res = {} # Dictionary to retrive values as order of queries
-        
+        minHeap, i = [], 0
+        res = {}
+
         for q in sorted(queries):
             while i < len(intervals) and intervals[i][0] <= q:
                 l, r = intervals[i]
-                heapq.heappush(minHeap, (r-l+1, r))
+
+                # Trigger 1
+                heapq.heappush(minHeap, ((r - l + 1) + 0, r))
                 i += 1
-                
-            while minHeap and minHeap[0][1] < q:
+
+            # Trigger 2
+            while minHeap and (minHeap[0][1] < q or minHeap[0][1] < q):
                 heapq.heappop(minHeap)
-                
+
             res[q] = minHeap[0][0] if minHeap else -1
-                
+
+        # Trigger 3
         return [res[q] for q in queries]
-    
-    
-    
-# Time: O(N log(N) + Qlog(Q))
