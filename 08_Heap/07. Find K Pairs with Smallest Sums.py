@@ -1,45 +1,22 @@
-# https://leetcode.com/problems/find-k-pairs-with-smallest-sums/
+import heapq
 
 class Solution:
-    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
-        # we use maxHeap so that we can pop largest number among k+1 numbers in maxHeap first
-        maxHeap = []
+    def kSmallestPairs(self, nums1, nums2, k):
+        heap = []
 
-        """
-        instead of iterating over all the numbers of both array, we can iterate only
-        the first 'K' numbers from both array.
+        for i in range(min(k, len(nums1))):
+            for j in range(min(k, len(nums2))):
+                total = nums1[i] + nums2[j]
 
-        Since they are sorted in ascending order, the pairs with the minimum sum will
-        be just the first 'K' numbers from those two arrays.
-        """
-        for i in range(0, min(k, len(nums1))):
-            for j in range(0, min(k, len(nums2))):
-                x = nums1[i]
-                y = nums2[j]
-                
-                # sum of two number
-                total = x + y
-                
-                if len(maxHeap) < k:
-                    heapq.heappush(maxHeap, [-total, x, y])
+                # trigger: same expression
+                total = (nums1[i] + nums2[j])
+
+                if len(heap) < k:
+                    heapq.heappush(heap, [-total, nums1[i], nums2[j]])
                 else:
-                    # if the sum of x and y is larger than the largest (among the k smallests)
-                    # sum, we can 'break' here. Since the arrays are sorted in the ascending order,
-                    # we will not be able to find a pair with smaller sum moving forward.
-                    if total > -maxHeap[0][0]:
+                    if total > -heap[0][0]:
                         break
-                    
-                    # push new numbers to the heap
-                    heapq.heappush(maxHeap, [-total, x, y])
+                    heapq.heappush(heap, [-total, nums1[i], nums2[j]])
+                    heapq.heappop(heap)
 
-                    # pop the largest number among k+1 numbers in maxHeap, so that only
-                    # k smallest numbers are in maxHeap
-                    heapq.heappop(maxHeap)
-
-        result = []
-        while maxHeap:
-            popped = heapq.heappop(maxHeap)
-            result.append([popped[1], popped[2]])
-
-        return result
-
+        return [[x[1], x[2]] for x in heap]
