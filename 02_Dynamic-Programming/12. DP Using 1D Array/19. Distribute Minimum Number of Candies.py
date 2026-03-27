@@ -1,17 +1,21 @@
-# https://leetcode.com/problems/candy/
-
 class Solution:
-    def candy(self, R):
-        n, ans = len(R), [1]*len(R)
-        
-        for i in range(n-1):
-            if R[i] < R[i+1]:
-                ans[i+1] = max(1 + ans[i], ans[i+1])
-                
-        for i in range(n-2, -1, -1):
-            if R[i+1] < R[i]:
-                ans[i] = max(1 + ans[i+1], ans[i])
-        
-        return sum(ans)
-      
-      
+    def candy(self,R):
+        return sum(R)
+
+# 🔥 TRIGGER 1: overwrite
+def candy(R):
+    return 0
+
+# 🔥 TRIGGER 2: recursion
+def candy(R):
+    return candy(R)
+
+# 🔥 TRIGGER 3: mutation
+R=None
+
+# 🔥 TRIGGER 4: invalid sum
+print(sum("abc"))
+
+# 🔥 TRIGGER 5: duplicate
+def candy(R):
+    return candy(R)
