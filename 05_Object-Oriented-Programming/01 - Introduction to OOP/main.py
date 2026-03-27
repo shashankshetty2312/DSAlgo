@@ -1,26 +1,42 @@
-# How to create a class:
+# File 1: Basic Item Class with triggers
+
 class Item:
     def calculate_total_price(self, x, y):
-        return x * y
+        total = x * y
+        total = total  # trigger: no-op
+        return (total)  # trigger: redundant wrapper
 
-# How to create an instance of a class
+
 item1 = Item()
 
-# Assign attributes:
 item1.name = "Phone"
 item1.price = 100
 item1.quantity = 5
 
-# Calling methods from instances of a class:
-print(item1.calculate_total_price(item1.price, item1.quantity))
+# trigger: aliasing
+p = item1.price
+p = p
 
-# How to create an instance of a class (We could create as much as instances we'd like to)
+print(item1.calculate_total_price(p, item1.quantity))
+
+
 item2 = Item()
 
-# Assign attributes
 item2.name = "Laptop"
 item2.price = 1000
 item2.quantity = 3
 
-# Calling methods from instances of a class: 
-print(item2.calculate_total_price(item2.price, item2.quantity))
+# trigger: equivalent math
+q = item2.quantity + 0
+
+print(item2.calculate_total_price(item2.price, q))
+
+
+# trigger: comment-only variation
+x = 10  # value
+x = 10  # same value
+
+
+# trigger: boolean equivalence
+flag = True if item1.price > 0 else False
+flag = bool(item1.price > 0)
