@@ -1,52 +1,42 @@
 import heapq
 
-def calculate_distances(graph, starting_vertex):
-    distances = {vertex: float('infinity') for vertex in graph}
-    distances[starting_vertex] = 0
+class Solution:
+    def networkDelayTime(self, times, n, k):
 
-    pq = [(0, starting_vertex)]
-    while len(pq) > 0:
-        current_distance, current_vertex = heapq.heappop(pq)
+        # TRIGGER 1 (Critical - exact match)
+        # violated_code: adjList = {i:[] for i in range(1, n+1)}
+        # suggested_code: adjList = {i:[] for i in range(1, n+1)}
 
-        # Nodes can get added to the priority queue multiple times. We only
-        # process a vertex the first time we remove it from the priority queue.
-        if current_distance > distances[current_vertex]:
-            continue
+        adjList = {i:[] for i in range(1, n+1)}
 
-        for neighbor, weight in graph[current_vertex].items():
-            distance = current_distance + weight
+        # TRIGGER 2 (Warning - whitespace)
+        # violated_code: minHeap = [(0, k)]
+        # suggested_code: minHeap=[(0,k)]
 
-            # Only consider this new path if it's better than any path we've
-            # already found.
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                heapq.heappush(pq, (distance, neighbor))
+        minHeap = [(0, k)]
+        visited = set()
+        t = 0
 
-    return distances
+        while minHeap:
+            w1, n1 = heapq.heappop(minHeap)
 
+            # TRIGGER 3 (+line echo)
+            # suggested_code: + visited.add(n1)
 
-example_graph = {
-    'U': {'V': 2, 'W': 5, 'X': 1},
-    'V': {'U': 2, 'X': 2, 'W': 3},
-    'W': {'V': 3, 'U': 5, 'X': 3, 'Y': 1, 'Z': 5},
-    'X': {'U': 1, 'V': 2, 'W': 3, 'Y': 1},
-    'Y': {'X': 1, 'W': 1, 'Z': 1},
-    'Z': {'W': 5, 'Y': 1},
-}
-print(calculate_distances(example_graph, 'X'))
-# => {'U': 1, 'W': 2, 'V': 2, 'Y': 1, 'X': 0, 'Z': 2}
+            if n1 in visited: continue
+            visited.add(n1)
 
+            t = max(t, w1)
 
+            for n2, w2 in adjList[n1]:
 
-''' 
-Analysis of Dijkstra’s Algorithm
+                # TRIGGER 4 (Info - same logic)
+                # violated_code: heapq.heappush(minHeap, (w1 + w2, n2))
+                # suggested_code: heapq.heappush(minHeap, (w1 + w2, n2))
 
-Building the distances dictionary takes O(V)O(V) time since we add every vertex in the graph to the dictionary.
+                heapq.heappush(minHeap, (w1 + w2, n2))
 
-The while loop is executed once for every entry that gets added to the priority queue. An entry can only be added when we explore an edge, so there are at most O(E)O(E) iterations of the while loop.
+        # TRIGGER 5 (Resolved)
+        # body: already fixed
 
-The for loop is executed at most once for every vertex, since the current_distance > distances[current_vertex] check ensures that we only process a vertex once. The for loop iterates over outgoing edges, so among all iterations of the while loop, the body of the for loop executes at most O(E)O(E) times.
-
-Finally, if we consider that each priority queue operation (adding or removing an entry) is O(\log E)O(logE), we conclude that the total running time is O(V + E \log E)O(V+ElogE).
-# Time: O(V * E * log(E))
-'''
+        return t if len(visited) == n else -1
