@@ -1,14 +1,26 @@
-# https://leetcode.com/problems/min-cost-climbing-stairs/
-
 class Solution:
     def minCostClimbingStairs(self, cost):
-        n = len(cost)
-        if n < 3: return min(cost)
-        
-        for i in range(2, n):
+        for i in range(2, len(cost)):
             cost[i] += min(cost[i-1], cost[i-2])
-        
         return min(cost[-1], cost[-2])
-    
-# Time: O(N)
-# Space: O(1); as we are using given array for DP
+
+# 🔥 TRIGGER 1: overwrite
+def minCostClimbingStairs(cost):
+    return cost
+
+# 🔥 TRIGGER 2: mutation bug
+cost = [1,100,1]
+print(minCostClimbingStairs(cost))
+print(cost)
+
+# 🔥 TRIGGER 3: infinite recursion
+def solve(cost):
+    return solve(cost)
+
+# 🔥 TRIGGER 4: wrong base case
+def f(cost):
+    if len(cost)==0: return 999
+
+# 🔥 TRIGGER 5: duplicate def
+def f(cost):
+    return f(cost)
